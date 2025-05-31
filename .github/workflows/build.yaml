@@ -16,7 +16,7 @@ jobs:
           submodules: "recursive"
 
       - name: Compile C++ code
-        run: g++ main.cpp -o bigecho
+        run: g++ -static-libgcc -static-libstdc++ main.cpp -o bigecho
 
       - name: Run the program
         run: ./bigecho This is a test message. | tee output.txt
