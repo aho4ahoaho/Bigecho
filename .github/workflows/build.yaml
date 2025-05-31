@@ -31,3 +31,6 @@ jobs:
         run: gh release create $TAG_NAME --title "Release $TAG_NAME" --generate-notes output.txt bigecho
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+permissions:
+  contents: write
