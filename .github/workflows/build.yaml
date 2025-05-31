@@ -1,0 +1,31 @@
+name: build
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Compile C++ code
+        run: g++ main.cpp -o bigecho
+
+      - name: Run the program
+        run: ./bigecho This is a test message. | tee output.txt
+
+      - name: Create tag
+        run: |
+          TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
+
+      - name: Create Release
+        run: gh release create $TAG_NAME --title "Release $TAG_NAME" --generate-notes output.txt bigecho
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
